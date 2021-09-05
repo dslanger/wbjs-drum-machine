@@ -98,27 +98,27 @@
 		<audio src="/sounds/tom.wav" data-trigger="107"></audio>
 		<audio src="/sounds/hihat.wav" data-trigger="115"></audio>
 		<script>
-			const init = () => {
-				document.addEventListener('keypress', (e) => {
-					const allKeys = document.querySelectorAll('.key');
-					[...allKeys].forEach((key) => {
-						key.classList.remove('playing');
-					});
-					const keyCode = e.keyCode;
-					const playedKey = document.querySelector(
-						`[data-key="${keyCode}"]`
-					);
-					playedKey.classList.add('playing');
-					setTimeout(() => {
-						playedKey.classList.remove('playing');
-					}, 500);
-					const sound = document.querySelector(
-						`[data-trigger="${keyCode}"]`
-					);
-					sound.play();
-				});
-			};
-			init();
+			function playSound(e) {
+				const keyCode = e.keyCode;
+				const key = document.querySelector(`[data-key="${keyCode}"]`);
+				const sound = document.querySelector(
+					`[data-trigger="${keyCode}"]`
+				);
+				if (!sound) return;
+				key.classList.add('playing');
+				sound.currentTime = 0;
+				sound.play();
+			}
+			function removeStyle(e) {
+				if (e.propertyName !== 'transform') return;
+				e.target.classList.remove('playing');
+			}
+
+			const keys = Array.from(document.querySelectorAll('.key'));
+			keys.forEach((key) =>
+				key.addEventListener('tranitionend', removeStyle)
+			);
+			window.addEventListener('keydown', playSound);
 		</script>
 	</body>
 </html>
