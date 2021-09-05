@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Drum Machine</title>
+		<style>
+			body {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				height: 100vh;
+				background-image: url('/img/drum-set.jpg');
+				background-size: cover;
+				background-position: center;
+			}
+			.keys {
+				margin: 0 auto;
+				width: 1600px;
+				display: flex;
+				justify-content: space-between;
+			}
+			.key {
+				display: flex;
+				flex-direction: column;
+				width: 8%;
+				border: 2px solid skyblue;
+				padding: 0.75rem;
+				text-align: center;
+				font-size: 1.5rem;
+				font-weight: 600;
+				background: #fff;
+				transition: all ease 100ms;
+			}
+			.key.playing {
+				transform: scale(1.1);
+				background: skyblue;
+				color: #fff;
+			}
+			kbd {
+				margin-bottom: 0.5rem;
+			}
+			.sound {
+				text-transform: capitalize;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="keys">
+			<div class="key" data-key="97">
+				<kbd>A</kbd>
+				<span class="sound">clap</span>
+			</div>
+			<div class="key" data-key="115">
+				<kbd>S</kbd>
+				<span class="sound">hihat</span>
+			</div>
+			<div class="key" data-key="100">
+				<kbd>D</kbd>
+				<span class="sound">kick</span>
+			</div>
+			<div class="key" data-key="102">
+				<kbd>F</kbd>
+				<span class="sound">openhat</span>
+			</div>
+			<div class="key" data-key="103">
+				<kbd>G</kbd>
+				<span class="sound">boom</span>
+			</div>
+			<div class="key" data-key="104">
+				<kbd>H</kbd>
+				<span class="sound">ride</span>
+			</div>
+			<div class="key" data-key="106">
+				<kbd>J</kbd>
+				<span class="sound">snare</span>
+			</div>
+			<div class="key" data-key="107">
+				<kbd>K</kbd>
+				<span class="sound">tom</span>
+			</div>
+			<div class="key" data-key="108">
+				<kbd>L</kbd>
+				<span class="sound">tink</span>
+			</div>
+		</div>
+		<audio src="/sounds/clap.wav" data-trigger="97"></audio>
+		<audio src="/sounds/kick.wav" data-trigger="100"></audio>
+		<audio src="/sounds/openhat.wav" data-trigger="102"></audio>
+		<audio src="/sounds/boom.wav" data-trigger="103"></audio>
+		<audio src="/sounds/ride.wav" data-trigger="104"></audio>
+		<audio src="/sounds/snare.wav" data-trigger="106"></audio>
+		<audio src="/sounds/tink.wav" data-trigger="108"></audio>
+		<audio src="/sounds/tom.wav" data-trigger="107"></audio>
+		<audio src="/sounds/hihat.wav" data-trigger="115"></audio>
+		<script>
+			const init = () => {
+				document.addEventListener('keypress', (e) => {
+					const allKeys = document.querySelectorAll('.key');
+					[...allKeys].forEach((key) => {
+						key.classList.remove('playing');
+					});
+					const keyCode = e.keyCode;
+					const playedKey = document.querySelector(
+						`[data-key="${keyCode}"]`
+					);
+					playedKey.classList.add('playing');
+					setTimeout(() => {
+						playedKey.classList.remove('playing');
+					}, 500);
+					const sound = document.querySelector(
+						`[data-trigger="${keyCode}"]`
+					);
+					sound.play();
+				});
+			};
+			init();
+		</script>
+	</body>
+</html>
